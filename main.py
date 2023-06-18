@@ -2,8 +2,8 @@
 [/] 1. Access and Generate Maze
 	[/] generate first before draw
 [/] 2. Draw maze
-[ ] 3. Add Player
-[ ] 4. Create Controls
+[/] 3. Add Player
+[/] 4. Create Controls
 [ ] 5. Game functions
 	[ ] Game state
 	[ ] Message
@@ -35,6 +35,7 @@ class Main():
 	def main(self, frame_size, tile):
 		cols, rows = frame_size[0] // tile, frame_size[-1] // tile
 		maze = Maze(cols, rows)
+		game = Game()
 		starting_pos = maze.grid_cells[0]
 		player = Player(tile // 3, tile // 3)
 
@@ -47,28 +48,31 @@ class Main():
 					self.running = False
 
 			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_LEFT:
-					player.left_pressed = True
-				if event.key == pygame.K_RIGHT:
-					player.right_pressed = True
-				if event.key == pygame.K_UP:
-					player.up_pressed = True
-				if event.key == pygame.K_DOWN:
-					player.down_pressed = True
-				player.check_move(tile, maze.grid_cells, maze.thickness)
+				if not self.game_over:
+					if event.key == pygame.K_LEFT:
+						player.left_pressed = True
+					if event.key == pygame.K_RIGHT:
+						player.right_pressed = True
+					if event.key == pygame.K_UP:
+						player.up_pressed = True
+					if event.key == pygame.K_DOWN:
+						player.down_pressed = True
+					player.check_move(tile, maze.grid_cells, maze.thickness)
 		
 			if event.type == pygame.KEYUP:
-				if event.key == pygame.K_LEFT:
-					player.left_pressed = False
-				if event.key == pygame.K_RIGHT:
-					player.right_pressed = False
-				if event.key == pygame.K_UP:
-					player.up_pressed = False
-				if event.key == pygame.K_DOWN:
-					player.down_pressed = False
-				player.check_move(tile, maze.grid_cells, maze.thickness)
+				if not self.game_over:
+					if event.key == pygame.K_LEFT:
+						player.left_pressed = False
+					if event.key == pygame.K_RIGHT:
+						player.right_pressed = False
+					if event.key == pygame.K_UP:
+						player.up_pressed = False
+					if event.key == pygame.K_DOWN:
+						player.down_pressed = False
+					player.check_move(tile, maze.grid_cells, maze.thickness)
 
-			# self.screen.blit(player.img, player.player_rect)
+			if game.is_game_over(player, screen):
+				self.game_over = True
 
 			self._draw(maze, tile, player)
 			self.FPS.tick(60)	

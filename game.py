@@ -1,33 +1,19 @@
 import pygame
 
+pygame.font.init()
+
 class Game:
-	def __init__(self, maze, player, tile):
-		self.maze = maze
-		self.player = player
-		self.tile = tile
+	def __init__(self):
+		self.font = pygame.font.SysFont("impact", 35)
+		self.background_color = pygame.Color("darkslategray")
+		self.message_color = pygame.Color("darkorange")
 
-	def is_collide(self, x, y):
-		walls_collide_list = sum([cell.get_rects(self.tile) for cell in self.maze.grid_cells], [])
-		tmp_rect = self.player.player_rect.move(x, y)
-		if tmp_rect.collidelist(walls_collide_list) == -1:
-			return False
-		return True
+	def message(self, screen):
+		screen.fill(self.background_color, (5, 460, 440, 35))
+		instructions = self.font.render('You Win!!', True, self.message_color)
+		screen.blit(instructions,(125,460))
 
-	# game check
-	def is_game_over(self):
-		global time, score, record, FPS
-		if time < 0:
-			pygame.time.wait(700)
-			player_rect.center = TILE // 2, TILE // 2
-			set_record(record, score)
-			record = get_record()
-			time, score, FPS = 60, 0, 60
-
-
-# player/game
-# collision list
-# timer, score, record
-# pygame.time.set_timer(pygame.USEREVENT, 1000)
-# time = 60
-# score = 0
-# record = get_record()
+	def is_game_over(self, player, screen):
+		if player.x >= 582 and player.y >= 582:
+			self.message(screen)
+			return True
