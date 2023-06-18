@@ -1,23 +1,23 @@
 import pygame
-from random import choice
+from random import choice, randrange
 
 class Cell:
-	def __init__(self, x, y):
+	def __init__(self, x, y, thickness):
 		self.x, self.y = x, y
+		self.thickness = thickness
 		self.walls = {'top': True, 'right': True, 'bottom': True, 'left': True}
 		self.visited = False
-		self.thickness = 3
 
 	def draw(self, sc, tile):
 		x, y = self.x * tile, self.y * tile
 		if self.walls['top']:
-			pygame.draw.line(sc, pygame.Color('darkorange'), (x, y), (x + tile, y), self.thickness)
+			pygame.draw.line(sc, pygame.Color('darkgreen'), (x, y), (x + tile, y), self.thickness)
 		if self.walls['right']:
-			pygame.draw.line(sc, pygame.Color('darkorange'), (x + tile, y), (x + tile, y + tile), self.thickness)
+			pygame.draw.line(sc, pygame.Color('darkgreen'), (x + tile, y), (x + tile, y + tile), self.thickness)
 		if self.walls['bottom']:
-			pygame.draw.line(sc, pygame.Color('darkorange'), (x + tile, y + tile), (x , y + tile), self.thickness)
+			pygame.draw.line(sc, pygame.Color('darkgreen'), (x + tile, y + tile), (x , y + tile), self.thickness)
 		if self.walls['left']:
-			pygame.draw.line(sc, pygame.Color('darkorange'), (x, y + tile), (x, y), self.thickness)
+			pygame.draw.line(sc, pygame.Color('darkgreen'), (x, y + tile), (x, y), self.thickness)
 
 	def get_rects(self, tile):
 		rects = []
