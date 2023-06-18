@@ -5,10 +5,10 @@
 [/] 3. Add Player
 [/] 4. Create Controls
 [ ] 5. Game functions
-	[ ] Game state
-	[ ] Message
-		[ ]	add message draw from early game, if False don't draw, if True then draw
-	[ ] clock
+		[/] Game state
+		[/] Message
+			[ ]	add message draw from early game, if False don't draw, if True then draw
+		[ ] clock
 """
 
 
