@@ -26,9 +26,11 @@ class Main():
 		self.game_over = False
 		self.FPS = pygame.time.Clock()
 
-	def _draw(self, maze, tile, player):
+	def _draw(self, maze, tile, player, game):
 		[cell.draw(self.screen, tile) for cell in maze.grid_cells]
 		player.draw(self.screen)
+		game.message(self.screen) if self.game_over else False
+		game.add_goal_point(maze.grid_cells[-1], self.screen)
 		player.update()
 		pygame.display.flip()
 
@@ -71,10 +73,14 @@ class Main():
 						player.down_pressed = False
 					player.check_move(tile, maze.grid_cells, maze.thickness)
 
-			if game.is_game_over(player, screen):
+			if game.is_game_over(player):
 				self.game_over = True
+				player.left_pressed = False
+				player.right_pressed = True
+				player.up_pressed = False
+				player.down_pressed = False
 
-			self._draw(maze, tile, player)
+			self._draw(maze, tile, player, game)
 			self.FPS.tick(60)	
 		pygame.quit()
 
@@ -84,7 +90,7 @@ if __name__ == "__main__":
 	RES = (window_size[0] + 150, window_size[-1])
 	tile = 30
 	screen = pygame.display.set_mode(RES)
-	pygame.display.set_caption("Slide Puzzle")
+	pygame.display.set_caption("Maze")
 
 	game = Main(screen)
 	game.main(window_size, tile)
