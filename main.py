@@ -7,12 +7,12 @@
 [ ] 5. Game functions
 		[/] Game state
 		[/] Message
-			[ ]	add message draw from early game, if False don't draw, if True then draw
+			[/]	add message draw from early game, if False don't draw, if True then draw
 		[ ] clock
 """
 
 
-import pygame
+import pygame, sys, time
 from maze import Maze
 from player import Player
 from game import Game
@@ -22,16 +22,36 @@ pygame.init()
 class Main():
 	def __init__(self, screen):
 		self.screen = screen
+		self.font = pygame.font.SysFont("impact", 30)
+		self.message_color = pygame.Color("cyan")
+		self.time = 60
 		self.running = True
 		self.game_over = False
 		self.FPS = pygame.time.Clock()
 
+	def instructions(self):
+		instructions1 = self.font.render('Use', True, self.message_color)
+		instructions2 = self.font.render('Arrow Keys', True, self.message_color)
+		instructions3 = self.font.render('to Move', True, self.message_color)
+		self.screen.blit(instructions1,(655,300))
+		self.screen.blit(instructions2,(610,331))
+		self.screen.blit(instructions3,(630,362))
+
 	def _draw(self, maze, tile, player, game):
+		# draw maze
 		[cell.draw(self.screen, tile) for cell in maze.grid_cells]
+
+		# add a goal point to reach
+		game.add_goal_point(maze.grid_cells[-1], tile, self.screen)
+
+		# draw every player movement
 		player.draw(self.screen)
-		game.message(self.screen) if self.game_over else False
-		game.add_goal_point(maze.grid_cells[-1], self.screen)
 		player.update()
+		
+		# instructions, winning message
+		self.instructions()
+		game.message(self.screen) if self.game_over else False
+	
 		pygame.display.flip()
 
 	def main(self, frame_size, tile):
@@ -43,11 +63,15 @@ class Main():
 
 		maze.generate_maze()
 		while self.running:
-			self.screen.fill("white")
+			self.screen.fill("gray")
+			self.screen.fill( pygame.Color("darkslategray"), (603, 0, 752, 752))
 
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
-					self.running = False
+					pygame.quit()
+					sys.exit()
+				if event.type == pygame.USEREVENT:
+					self.time -= 1
 
 			if event.type == pygame.KEYDOWN:
 				if not self.game_over:
@@ -76,20 +100,19 @@ class Main():
 			if game.is_game_over(player):
 				self.game_over = True
 				player.left_pressed = False
-				player.right_pressed = True
+				player.right_pressed = False
 				player.up_pressed = False
 				player.down_pressed = False
 
 			self._draw(maze, tile, player, game)
-			self.FPS.tick(60)	
-		pygame.quit()
+			self.FPS.tick(60)
 
 
 if __name__ == "__main__":
 	window_size = (602, 602)
-	RES = (window_size[0] + 150, window_size[-1])
+	screen = (window_size[0] + 150, window_size[-1])
 	tile = 30
-	screen = pygame.display.set_mode(RES)
+	screen = pygame.display.set_mode(screen)
 	pygame.display.set_caption("Maze")
 
 	game = Main(screen)
