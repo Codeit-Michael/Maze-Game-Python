@@ -1,23 +1,11 @@
-"""
-[/] 1. Access and Generate Maze
-	[/] generate first before draw
-[/] 2. Draw maze
-[/] 3. Add Player
-[/] 4. Create Controls
-[ ] 5. Game functions
-		[/] Game state
-		[/] Message
-			[/]	add message draw from early game, if False don't draw, if True then draw
-		[ ] clock
-"""
-
-
 import pygame, sys, time
 from maze import Maze
 from player import Player
 from game import Game
+from clock import Clock
 
 pygame.init()
+pygame.font.init()
 
 class Main():
 	def __init__(self, screen):
@@ -37,7 +25,7 @@ class Main():
 		self.screen.blit(instructions2,(610,331))
 		self.screen.blit(instructions3,(630,362))
 
-	def _draw(self, maze, tile, player, game):
+	def _draw(self, maze, tile, player, game, clock):
 		# draw maze
 		[cell.draw(self.screen, tile) for cell in maze.grid_cells]
 
@@ -48,9 +36,14 @@ class Main():
 		player.draw(self.screen)
 		player.update()
 		
-		# instructions, winning message
+		# instructions, clock, winning message
 		self.instructions()
-		game.message(self.screen) if self.game_over else False
+		if self.game_over:
+			clock.stop_timer()
+			self.screen.blit(game.message(),(610,120))
+		else:
+			clock.update_timer()
+		self.screen.blit(clock.display_timer(), (625,200))
 	
 		pygame.display.flip()
 
@@ -60,8 +53,10 @@ class Main():
 		game = Game()
 		starting_pos = maze.grid_cells[0]
 		player = Player(tile // 3, tile // 3)
+		clock = Clock()
 
 		maze.generate_maze()
+		clock.start_timer()
 		while self.running:
 			self.screen.fill("gray")
 			self.screen.fill( pygame.Color("darkslategray"), (603, 0, 752, 752))
@@ -104,7 +99,7 @@ class Main():
 				player.up_pressed = False
 				player.down_pressed = False
 
-			self._draw(maze, tile, player, game)
+			self._draw(maze, tile, player, game, clock)
 			self.FPS.tick(60)
 
 

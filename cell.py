@@ -1,5 +1,5 @@
 import pygame
-from random import choice, randrange
+from random import choice
 
 class Cell:
 	def __init__(self, x, y, thickness):

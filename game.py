@@ -14,9 +14,9 @@ class Game:
 		img = pygame.transform.scale(img, (tile, tile))
 		screen.blit(img, (goal_cell.x * tile, goal_cell.y * tile))
 
-	def message(self, screen):
-		instructions = self.font.render('You Win!!', True, self.message_color)
-		screen.blit(instructions,(610,150))
+	def message(self):
+		msg = self.font.render('You Win!!', True, self.message_color)
+		return msg
 
 	def is_game_over(self, player):
 		if player.x >= 582 and player.y >= 582:

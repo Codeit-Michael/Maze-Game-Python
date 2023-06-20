@@ -1,7 +1,5 @@
-#Imports
 import pygame
 
-#Player Class
 class Player:
 	def __init__(self, x, y):
 		self.x = int(x)
