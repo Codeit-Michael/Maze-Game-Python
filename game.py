@@ -12,7 +12,7 @@ class Game:
 	# add goal point for player to reach
 	def add_goal_point(self, screen):
 		# adding gate for the goal point
-		img_path = f'img/gate.png'
+		img_path = 'img/gate.png'
 		img = pygame.image.load(img_path)
 		img = pygame.transform.scale(img, (self.tile, self.tile))
 		screen.blit(img, (self.goal_cell.x * self.tile, self.goal_cell.y * self.tile))

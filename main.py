@@ -1,4 +1,4 @@
-import pygame, sys, time
+import pygame, sys
 from maze import Maze
 from player import Player
 from game import Game
@@ -12,7 +12,6 @@ class Main():
 		self.screen = screen
 		self.font = pygame.font.SysFont("impact", 30)
 		self.message_color = pygame.Color("cyan")
-		self.time = 60
 		self.running = True
 		self.game_over = False
 		self.FPS = pygame.time.Clock()
@@ -66,8 +65,6 @@ class Main():
 				if event.type == pygame.QUIT:
 					pygame.quit()
 					sys.exit()
-				if event.type == pygame.USEREVENT:
-					self.time -= 1
 
 			# if keys were pressed still
 			if event.type == pygame.KEYDOWN:
