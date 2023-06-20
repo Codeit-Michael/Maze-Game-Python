@@ -20,20 +20,6 @@ class Cell:
 		if self.walls['left']:
 			pygame.draw.line(sc, pygame.Color('darkgreen'), (x, y + tile), (x, y), self.thickness)
 
-	# add walls to cell
-	def get_rects(self, tile):
-		rects = []
-		x, y = self.x * tile, self.y * tile
-		if self.walls['top']:
-			rects.append(pygame.Rect( (x, y), (tile, self.thickness) ))
-		if self.walls['right']:
-			rects.append(pygame.Rect( (x + tile, y), (self.thickness, tile) ))
-		if self.walls['bottom']:
-			rects.append(pygame.Rect( (x, y + tile), (tile , self.thickness) ))
-		if self.walls['left']:
-			rects.append(pygame.Rect( (x, y), (self.thickness, tile) ))
-		return rects
-
 	# checks if cell does exist and returns it if it does
 	def check_cell(self, x, y, cols, rows, grid_cells):
 		find_index = lambda x, y: x + y * cols
