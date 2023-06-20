@@ -25,12 +25,13 @@ class Main():
 		self.screen.blit(instructions2,(610,331))
 		self.screen.blit(instructions3,(630,362))
 
+	# draws all configs; maze, player, instructions, and time
 	def _draw(self, maze, tile, player, game, clock):
 		# draw maze
 		[cell.draw(self.screen, tile) for cell in maze.grid_cells]
 
 		# add a goal point to reach
-		game.add_goal_point(maze.grid_cells[-1], tile, self.screen)
+		game.add_goal_point(self.screen)
 
 		# draw every player movement
 		player.draw(self.screen)
@@ -47,11 +48,11 @@ class Main():
 	
 		pygame.display.flip()
 
+	# main game loop
 	def main(self, frame_size, tile):
 		cols, rows = frame_size[0] // tile, frame_size[-1] // tile
 		maze = Maze(cols, rows)
-		game = Game()
-		starting_pos = maze.grid_cells[0]
+		game = Game(maze.grid_cells[-1], tile)
 		player = Player(tile // 3, tile // 3)
 		clock = Clock()
 
@@ -68,6 +69,7 @@ class Main():
 				if event.type == pygame.USEREVENT:
 					self.time -= 1
 
+			# if keys were pressed still
 			if event.type == pygame.KEYDOWN:
 				if not self.game_over:
 					if event.key == pygame.K_LEFT:
@@ -80,6 +82,7 @@ class Main():
 						player.down_pressed = True
 					player.check_move(tile, maze.grid_cells, maze.thickness)
 		
+			# if pressed key released
 			if event.type == pygame.KEYUP:
 				if not self.game_over:
 					if event.key == pygame.K_LEFT:
@@ -106,9 +109,9 @@ class Main():
 if __name__ == "__main__":
 	window_size = (602, 602)
 	screen = (window_size[0] + 150, window_size[-1])
-	tile = 30
+	tile_size = 30
 	screen = pygame.display.set_mode(screen)
 	pygame.display.set_caption("Maze")
 
 	game = Main(screen)
-	game.main(window_size, tile)
+	game.main(window_size, tile_size)

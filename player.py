@@ -15,11 +15,13 @@ class Player:
 		self.down_pressed = False
 		self.speed = 4
 
+	# get current cell position of the player
 	def get_current_cell(self, x, y, grid_cells):
 		for cell in grid_cells:
 			if cell.x == x and cell.y == y:
 				return cell
 
+	# stops player to pass through walls
 	def check_move(self, tile, grid_cells, thickness):
 		current_cell_x, current_cell_y = self.x // tile, self.y // tile
 		current_cell = self.get_current_cell(current_cell_x, current_cell_y, grid_cells)
@@ -41,9 +43,11 @@ class Player:
 				if self.y >= current_cell_abs_y + tile - (self.player_size + thickness):
 					self.down_pressed = False
 
-	def draw(self, win):
-		pygame.draw.rect(win, self.color, self.rect)
+	# drawing player to the screen
+	def draw(self, screen):
+		pygame.draw.rect(screen, self.color, self.rect)
 
+	# updates player position while moving
 	def update(self):
 		self.velX = 0
 		self.velY = 0

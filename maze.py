@@ -8,6 +8,7 @@ class Maze:
 		self.thickness = 4
 		self.grid_cells = [Cell(col, row, self.thickness) for row in range(self.rows) for col in range(self.cols)]
 
+	# carve grid cell walls
 	def remove_walls(self, current, next):
 		dx = current.x - next.x
 		if dx == 1:
@@ -24,6 +25,7 @@ class Maze:
 			current.walls['bottom'] = False
 			next.walls['top'] = False
 
+	# generates maze
 	def generate_maze(self):
 		current_cell = self.grid_cells[0]
 		array = []

@@ -8,6 +8,7 @@ class Cell:
 		self.walls = {'top': True, 'right': True, 'bottom': True, 'left': True}
 		self.visited = False
 
+	# draw grid cell walls
 	def draw(self, sc, tile):
 		x, y = self.x * tile, self.y * tile
 		if self.walls['top']:
@@ -19,6 +20,7 @@ class Cell:
 		if self.walls['left']:
 			pygame.draw.line(sc, pygame.Color('darkgreen'), (x, y + tile), (x, y), self.thickness)
 
+	# add walls to cell
 	def get_rects(self, tile):
 		rects = []
 		x, y = self.x * tile, self.y * tile
@@ -32,12 +34,14 @@ class Cell:
 			rects.append(pygame.Rect( (x, y), (self.thickness, tile) ))
 		return rects
 
+	# checks if cell does exist and returns it if it does
 	def check_cell(self, x, y, cols, rows, grid_cells):
 		find_index = lambda x, y: x + y * cols
 		if x < 0 or x > cols - 1 or y < 0 or y > rows - 1:
 			return False
 		return grid_cells[find_index(x, y)]
 
+	# checking cell neighbors of current cell if visited (carved) or not
 	def check_neighbors(self, cols, rows, grid_cells):
 		neighbors = []
 		top = self.check_cell(self.x, self.y - 1, cols, rows, grid_cells)
